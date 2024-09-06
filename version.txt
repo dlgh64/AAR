@@ -1,0 +1,5 @@
+version 1.5 	voice stops dog bark stops
+
+	
+
+version 2.0	direction of voice and direction dog barks

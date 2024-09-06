@@ -1,0 +1,15 @@
+AAR Brain stroming:
+
+1. An electronic tour guide with audio augmented reality in the form of a frame
+
+2. Acoustically transparent audio simultaneous interpretation (perhaps eliminating the corresponding human voice while delivering the translated virtual audio through an augmented reality headset?)
+
+3. Education?
+
+4. Providing people with guidance and information during emergencies through audio AR? (maybe not realistic)
+
+5. Directional navigation audio provided by the car's driver's seat headrest？ (heard only by the driver)
+
+
+
+做一个侦测真实世界的声音 然后将他转变为一个虚拟的声音  比如： 狗叫——————猫叫

@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 3a7d2f48536da06439131f1a1378a28c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - dogBarkingClip: {fileID: 8300000, guid: e4405ed930bb2b244bde68d1ab038b16, type: 3}
+  - inputClip: {instanceID: 0}
+  - modelFile: {fileID: 5022602860645237092, guid: 588faaff22e4e9b4c9546a66a84eadd3, type: 3}
+  - className: {instanceID: 0}
+  - confidenceScore: {instanceID: 0}
+  - shortClassName: {instanceID: 0}
+  - shortConfidenceScore: {instanceID: 0}
+  - audioSource: {instanceID: 0}
+  - soundSourceTransform: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
