@@ -26,7 +26,7 @@ public class Classification : MonoBehaviour
     //*********************************************************************************************************************************************
     //*********************************************************************************************************************************************
 
-    public AudioClip dogBarkingClip; // 用于存储狗叫声的 AudioClip
+    public AudioClip dogBarkingClip; // 用于存储狗叫声的 AudioClip   AudioClip for storing dog barking sounds
 
     //*********************************************************************************************************************************************
     //*********************************************************************************************************************************************
@@ -70,10 +70,11 @@ public class Classification : MonoBehaviour
     //*********************************************************************************************************************************************
 
     //[Header("Audio Source Direction")]
-    //public Transform soundSourceTransform;  // 实时声源的 Transform，应与声源实时位置同步
+    //public Transform soundSourceTransform;  // The Transform of the real-time sound source should be synchronized with the real-time position of the sound source.
 
-    //步骤 1: 定义全局变量
+    //步骤 1: 定义全局变量  define public varibles
     //在您的类中定义一些变量来存储从麦克风输入中读取的左右声道数据。您还需要定义一个变量来跟踪声源的最近估计方向。
+    //Define some variables in your class to store the left and right channel data read from the microphone input. You also need to define a variable to track the closest estimated direction of the sound source.
     [Header("Audio Source Localization")]
     public AudioSource audioSource;  // This should be assigned in the Unity editor
     public float directionThreshold = 0.1f;  // Threshold to determine significant direction change
@@ -93,6 +94,8 @@ public class Classification : MonoBehaviour
 
     //步骤 3: 步骤 3: 处理音频数据以估计方向
     //创建一个方法来分析音频数据，并估计声源方向。您可以比较左右声道的能量，来决定声音更可能来自哪个方向。
+    //Create a method to analyze audio data and estimate sound source direction
+    //compare the energy of the left and right channels to determine which direction the sound is more likely to come from.
     void Update()
     {
         if (audioSource.clip == null || Microphone.GetPosition(null) <= 0)
@@ -149,15 +152,15 @@ public class Classification : MonoBehaviour
             Debug.LogWarning("audioSource.clip is null.");
             return 0.0f; // 如果没有音频片段，无法计算方向
         }
-        int sampleSize = 1024;  // 样本窗口的大小
-        float[] samples = new float[sampleSize * 2];  // 立体声通道
+        int sampleSize = 1024;  // 样本窗口的大小 sample size
+        float[] samples = new float[sampleSize * 2];  // 立体声通道 Dual Channel
 
         int position = Microphone.GetPosition(null) - sampleSize;
         Debug.Log($"Microphone position: {position}");
         if (position < 0)
         {
             Debug.LogWarning("Microphone position is less than sample size.");
-            return 0.0f;  // 确保不会使用负索引
+            return 0.0f;  // 确保不会使用负索引 Make sure don't use negative indexes
         }
         audioSource.clip.GetData(samples, position);
 
@@ -169,7 +172,7 @@ public class Classification : MonoBehaviour
         }
         Debug.Log($"LeftSum: {leftSum}, RightSum: {rightSum}, Difference: {rightSum - leftSum}");
 
-        return rightSum - leftSum;  // 右边为正，左边为负
+        return rightSum - leftSum;  // 右边为正，左边为负    Right side is positive, left side is negative
     }
 
 
@@ -179,12 +182,15 @@ public class Classification : MonoBehaviour
     {
         Debug.Log($"Calculated Direction: {direction}");
         // 确定音源的x坐标，10代表向右，-10代表向左
+        //Determine the x-coordinate of the sound source, 10 represents right, -10 represents left
         float xPosition = direction > 0 ? 10 : -10;
 
         // 根据方向设置音源的具体位置
+        //Set the specific location of the sound source according to the direction
         Vector3 position = new Vector3(xPosition, soundSourceTransform.position.y, soundSourceTransform.position.z);
 
         // 应用位置变更
+        //Apply location changes
         soundSourceTransform.position = position;
         Debug.Log($"Direction: {direction}, New Position: {position}");
     }
@@ -335,14 +341,14 @@ public class Classification : MonoBehaviour
 
         if (numModelClasses == -1 || input.length < numModelClasses)
         {
-            numModelClasses = input.AsFloats().Length; // 更新类的数量，并确保不会超出数组边界
+            numModelClasses = input.AsFloats().Length; // 更新类的数量，并确保不会超出数组边界    Update the number of classes and ensure that the array bounds are not exceeded
         }
         int bestClass = -1;
         float bestConfidence = -1f;
 
         for (int i = 0; i < numModelClasses; i++)
         {
-            float confidence = input[0, 0, 0, i]; // 确保索引i不会超出边界
+            float confidence = input[0, 0, 0, i]; // 确保索引i不会超出边界    Make sure index i does not go out of bounds
 
             //float confidence = input[0, 0, 0, i];
             if (confidence > bestConfidence)
@@ -352,14 +358,14 @@ public class Classification : MonoBehaviour
             }
         }
 
-        // 特定处理speech识别
+        // 特定处理speech识别 Specific processing of speech recognition
         if (classMap[bestClass] == "Speech" && bestConfidence > 0.5)
         {
             if (!isSpeechActive)
             {
                 isSpeechActive = true;
-                UpdateSoundDirection(calculateDirection()); // 更新声源方向
-                PlayDogBarkingSound();  // 在新位置播放声音
+                UpdateSoundDirection(calculateDirection()); // update sound source direction
+                PlayDogBarkingSound();  // play in new position
             }
         }
         else if (isSpeechActive)
@@ -384,6 +390,7 @@ public class Classification : MonoBehaviour
             // 使用3D音频播放
             //AudioSource.PlayClipAtPoint(dogBarkingClip, soundSourceTransform.position);
             // 如果当前没有播放的狗叫声，则创建一个新的 AudioSource 来播放
+            //If there is no dog barking sound currently playing, create a new AudioSource to play it.
             if (barkingAudioSource == null)
             {
                 barkingAudioSource = gameObject.AddComponent<AudioSource>();
